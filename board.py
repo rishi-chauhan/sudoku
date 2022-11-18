@@ -13,13 +13,18 @@ class Board:
         """getter function for board dimension"""
         return self.__dimension
 
+    def get_board(self) -> List[int]:
+        """getter for sudoku board"""
+        return self.__board
+
     def print_board(self) -> None:
         """Prints board in the current state"""
-        print("+" + "---+"*self.__dimension)
-        for ind, ele in enumerate(self.__board):
-            if (ind+1)%self.__dimension==0:
+        dimension = self.get_board_dimension()
+        print("+" + "---+"*dimension)
+        for ind, ele in enumerate(self.get_board()):
+            if (ind+1)%dimension==0:
                 print(f"| {ele} |")
-                print("+" + "---+"*self.__dimension)
+                print("+" + "---+"*dimension)
             else:
                 print(f"| {ele} ", end="")
 
@@ -27,26 +32,26 @@ class Board:
         """Returns sudoku board considering rows as major"""
         board = []
         row = []
-        for val in self.__board:
+        for val in self.get_board():
             row.append(val)
-            if len(row) == self.__dimension:
+            if len(row) == self.get_board_dimension():
                 board.append(row)
                 row = []
         return board
 
     def get_col_board(self) -> List[List[int]]:
         """Returns sudoku board considering columns as major"""
-        board = [[] for i in range(self.__dimension)]
-        for index, val in enumerate(self.__board):
-            board[index % self.__dimension].append(val)
+        board = [[] for i in range(self.get_board_dimension())]
+        for index, val in enumerate(self.get_board()):
+            board[index % self.get_board_dimension()].append(val)
         return board
 
     def get_box_board(self) -> List[List[int]]:
         """Returns sudoku board considering box as major"""
-        board = [[] for i in range(self.__dimension)]
-        box_dimension=int(sqrt(self.__dimension))
-        for ind, ele in enumerate(self.__board):
-            row=int(ind/self.__dimension)
-            col=int(ind%self.__dimension)
+        board = [[] for i in range(self.get_board_dimension())]
+        box_dimension=int(sqrt(self.get_board_dimension()))
+        for ind, ele in enumerate(self.get_board()):
+            row=int(ind/self.get_board_dimension())
+            col=int(ind%self.get_board_dimension())
             board[(box_dimension*int(row/box_dimension))+int(col/box_dimension)].append(ele)
         return board
